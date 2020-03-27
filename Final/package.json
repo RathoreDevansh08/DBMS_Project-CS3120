@@ -1,0 +1,25 @@
+{
+  "name": "cdc-dbms-project",
+  "version": "1.0.0",
+  "description": "DBMS Project",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^3.0.1",
+    "express": "^4.17.1",
+    "express-session": "^1.17.0",
+    "mariadb": "^2.2.0",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://re_cursed@bitbucket.org/111701026/cdc-dbms-project.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/111701026/cdc-dbms-project#readme"
+}

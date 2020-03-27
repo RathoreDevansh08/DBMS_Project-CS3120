@@ -1,0 +1,87 @@
+<html>
+<head>
+	<title>Profile</title>
+</head>
+<body>
+	<table id="stud_t1">
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>NAME</th>
+				<th>DOB</th>
+				<th>CONTACT</th>
+				<th>ADDRESS</th>
+				<th>NATIONALITY</th>
+				<th>CATEGORY</th>
+				<th>JEE RANK</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% student.forEach(function (stud) { %>
+			<tr>
+				<td><%= stud.student_id %></td>
+				<td><%= stud.name %></td>
+				<td><%= stud.dob %></td>
+				<td><%= stud.contact %></td>
+				<td><%= stud.address %></td>
+				<td><%= stud.nationality %></td>
+				<td><%= stud.admission_cat %></td>
+				<td><%= stud.jee_rank %></td>
+			</tr>
+		<% }) %>
+		</tbody>
+	</table>
+	<br><br>
+	<table id="stud_t2">
+		<thead>
+			<tr>
+				<th>MAIL ID</th>
+				<th>BRANCH</th>
+				<th>STREAM</th>
+				<th>ADMISSION YEAR</th>
+				<th>SEMESTER</th>
+				<th>APPLICABILITY</th>
+				<th>VERIFIED</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% student.forEach(function (stud) { %>
+			<tr>
+				<td><%= stud.mail_id %></td>
+				<td><%= stud.branch %></td>
+				<td><%= stud.stream %></td>
+				<td><%= stud.admission_year %></td>
+				<td><%= stud.semester %></td>
+				<td><%= stud.applicability %></td>
+				<td><%= stud.verified %></td>
+			</tr>
+		<% }) %>
+		</tbody>
+	</table>
+	<br><br>
+	<table id="stud_t3">
+		<thead>
+			<tr>	
+				<th>10TH PERCENTAGE</th>
+				<th>10TH SCHOOL</th>
+				<th>10TH BOARD</th>
+				<th>12TH PERCENTAGE</th>
+				<th>12TH SCHOOL</th>
+				<th>12TH BOARD</th>
+			</tr>
+		</thead>
+		<tbody>
+		<% student.forEach(function (stud) { %>
+			<tr>
+				<td><%= stud.tenth_percent %></td>
+				<td><%= stud.tenth_school %></td>
+				<td><%= stud.tenth_board %></td>
+				<td><%= stud.twelth_percent %></td>
+				<td><%= stud.twelth_school %></td>
+				<td><%= stud.twelth_board %></td>
+		   </tr>
+	   <% }) %>
+	   </tbody>
+	</table>
+</body>
+</html>
