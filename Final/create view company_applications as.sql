@@ -1,0 +1,2 @@
+create view company_applications as
+with verified(id,coun) as (select company_id,count(verified) from company_req where verified=1 group by company_id) select C.company_id, ifnull(V.coun,0) as num_verified, count(C.verified) as total from company_req as C left join verified as V on C.company_id=V.id group by C.company_id;

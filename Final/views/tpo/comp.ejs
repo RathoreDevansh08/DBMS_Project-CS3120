@@ -21,6 +21,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom CSS -->
     <link href="stylesheets/style.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="stylesheets/companies_list.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -163,7 +165,7 @@
         </style>
 </head>
 
-<body>
+<body class="html not-front logged-in one-sidebar sidebar-first page-node page-node- page-node-12292 node-type-internship role-authenticated-user role-unverified-student role-Non-final-year-student role-CV-creator role-Student-with-CV">
     <!-- ============================================================== -->
     <!-- Preloader - style you can find in spinners.css -->
     <!-- ============================================================== -->
@@ -520,20 +522,35 @@
     <!-- ============================================================== -->
     <!-- customizer Panel -->
     <!-- ============================================================== -->
-     <!-- <div class="tpo-form">
-        <h1>Search detail</h1>
-        <form name="tpoform" action="/tpoSearch" method="POST">
-            <input type="text" name="ID" placeholder="ID" required>
-            <select id="usertype" name = "usertype">
-                <option value="student" selected="selected">Student</option>
-                <option value="studentrep">Student Rep</option>
-                <option value="staff">Staff Rep</option>
-                <option value="company">Company</option>
-            </select><br><br>
-            <input type="submit" value="search">
-        </form>
-    </div> -->
-    Hello company with id <%= id %>.
+    
+<div class="wrapper">
+  <ul class="menu">
+      <div class="head">Applications</div> 
+  <ul>
+    <% for(let i=0;i<=applications.length-1;i++) {%>
+    <li>
+      <div class="info">
+        <a href=<%= "/application/" + applications[i].application_id %>>
+            <h3 style="display: inline-block;"><%= applications[i].profile_name%></h3>
+            <i>
+                <% if(applications[i].verified==1){ %>
+                    <h1 class="float-right" style="margin-top: 15px; margin-right: 15px; font-size: 20px; color: green">      Verified
+                    </h1>
+                <% } else{ %>
+                    <h1 class="float-right" style="margin-top: 15px; margin-right: 15px; font-size: 20px; color: red">
+                        Unverified
+                    </h1>
+                <% } %>
+            </i>
+        </a>
+     </div>
+    </li>
+    <% } %>
+    </ul>
+  </ul>
+</div>
+
+
     <div class="chat-windows"></div>
     <!-- ============================================================== -->
     <!-- All Jquery -->

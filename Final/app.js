@@ -16,6 +16,10 @@ app.use("/company_students_applied_list", express.static("public"));
 app.use("/company_students_selected_list", express.static("public"));
 app.use("/company_students_applied_view", express.static("public"));
 app.use("/company_students_selected_view", express.static("public"));
+app.use("/application", express.static("public"));
+app.use("/verify", express.static("public"));
+
+
 
 
 app.use(bodyParser.urlencoded({extended: true}));
@@ -76,7 +80,7 @@ app.get("/company1/:company_id", function(req,res){
 		res.render("company/comp_job_profile_view.ejs", {company: results});
 	});
 	}
-});	
+});
 
 app.get("/company_students_applied_list/:application_id", function(req,res){
 	if(req.session.loggedin)
@@ -88,7 +92,7 @@ app.get("/company_students_applied_list/:application_id", function(req,res){
 	else{
 		res.send("Some error occured");
 	}
-});	
+});
 
 app.get("/company_students_selected_list/:application_id", function(req,res){
 	if(req.session.loggedin)
@@ -97,119 +101,58 @@ app.get("/company_students_selected_list/:application_id", function(req,res){
 		res.render("company/comp_selected_students_list.ejs", {students: results});
 	});
 	}
-});	
+});
 
 app.get("/company_students_applied_view/:student_id", function(req,res){
 	if(req.session.loggedin)
 	{
 		connection.query('select * from student where student_id = ?', [req.params.student_id],function(err, results,fields){
-		res.render("student/profile.ejs", {student: results});
+		res.render("student/profile_updated.ejs", {student: results});
 	});
 	}
-});	
+});
 
 app.get("/company_students_selected_view/:student_id", function(req,res){
 	if(req.session.loggedin)
 	{
 		connection.query('select * from student where student_id = ?', [req.params.student_id],function(err, results,fields){
-		res.render("student/profile.ejs", {student: results});
+		res.render("student/profile_updated.ejs", {student: results});
 	});
 	}
-});	
-// function getverified(callback)
-// {
-// 	var verified = [];
-// 	var total = [];
-// 	connection.query('select * from company order by name', function(err,results,fields){
-
-// 	});
-// }
+});
 
 app.get("/company_details", function(req,res){
 	if(req.session.usertype=="tpo"){
-		connection.query('select * from company order by name', function(err,results,fields){
-			async.series([
-				function(done){
-					var verified = [];
-					var total = [];
-					var pending = results.length;
-					for(let i=0;i<results.length;i++){
-						connection.query('select count(*) as c from company_req where company_id = ? and verified=1', [results[i].company_id], function(err,r,f)
-						{
-							console.log(r[0].c);
-							verified.push(r[0].c);
-						});
-						connection.query('select count(*) as c from company_req where company_id = ?', [results[i].company_id], function(err,r,f)
-						{
-							total.push(r[0].c);
-						});
-						// if(0 == --pending){
-						// 	while(verified.length!=results.length && total.length!=results.length)
-						// 	{
-						// 		continue;
-						// 		if(verified.length==results.length && total.length==results.length)
-						// 		{
-						// 			console.log(verified);
-						// 			console.log(total);
-						// 			done(err,verified,total);
-
-						// 		}
-						// 	}
-						// 	// console.log(verified);
-						// 	// console.log(total);
-						// 	// done(err,verified,total);
-						// 	// console.log("DF");
-						// }
-							console.log(verified);
-							console.log(total);
-							done(err,verified,total);
-							console.log("DF");
-					}
-				}
-			],
-			function(err,result){
-				// console.log(verified);
-				console.log(result);
-				res.render("tpo/company_details.ejs", {companies: results, verified: result[0][0], total: result[0][1]});
-			});
+		connection.query('select C.company_id,C.name,ifnull(Ca.num_verified,0) as num_verified,ifnull(Ca.total,0) as total from company as C left join company_applications as Ca on C.company_id=Ca.company_id', function(err,results,fields){
+			res.render("tpo/company_details.ejs", {companies: results});
 		});
-	}else{
-		res.send("You are not authorised for this page.");
 	}
 });
-// 	var verified = [];
-// 	var total = [];
-// 	if(req.session.usertype=="tpo"){
-// 		connection.query('select * from company order by name', function(err,results,fields){
-// 			if(results.length > 0)
-// 			{
-// 				// for(let i=0;i<results.length;i++)
-// 				// {
-// 				// 	connection.query('select count(*) as c from company_req where company_id = ? and verified=1', [results[i].company_id], function(err,r,f){
-// 				// 		if(err)
-// 				// 			console.log(err);
-// 				// 		console.log(r[0].c);
-// 				// 		verified.push(r[0].c);
-// 				// 	});
-// 				// 	connection.query('select count(*) as c from company_req where company_id = ?', [results[i].company_id], function(err,r,f){
-// 				// 		total.push(r[0].c);
-// 				// 	});
-// 				// }
-// 				// console.log(verified);
-// 				// console.log(total);
-// 				res.render("tpo/company_details.ejs", {companies: results, verified: verified, total: total});
-// 			}
-// 			else
-// 				res.send("Some error occured");
-// 		});
-// 	}
-// 	else
-// 		res.send("you are not authorised for this.");
-// });
 
 app.get("/company/:company_id", function(req,res){
 	if(req.session.usertype=="tpo"){
-		res.render("tpo/comp.ejs", {id: req.params.company_id});
+		connection.query('select * from company_req where company_id=?',[req.params.company_id],function(err,results,fields){
+			res.render('tpo/comp.ejs', {applications: results});
+		});
+	}
+});
+
+app.get("/application/:application_id", function(req,res){
+	if(req.session.usertype=="tpo"){
+		connection.query('select C.name,Cr.* from company_req as Cr,company as C where C.company_id=Cr.company_id and Cr.application_id=?', [req.params.application_id], function(err,results,fields){
+			res.render('tpo/application_details.ejs', {application: results});
+		});
+	}
+});
+
+app.get('/verify/:application_id', function(req,res){
+	if(req.session.usertype='tpo'){
+		connection.query('update company_req set verified=1 where application_id=?', [req.params.application_id], function(err,results,fields){
+			connection.query('select company_id from company_req where application_id=?', [req.params.application_id], function(er,result,field){
+				console.log(result);
+				res.redirect("/company/"+result[0].company_id);
+			});
+		});
 	}
 });
 
@@ -246,7 +189,7 @@ app.get("/add_job_profile", function(req,res){
 	{
 		res.render("company/comp_job_profile.ejs");
 	}
-	
+
 	else {
 		res.send("Your are not logged in");
 	}
@@ -286,6 +229,7 @@ app.get("/tpo_profile_update", function(req,res){
 	}
 });
 
+
 app.get("/student_details", function(req,res){
 	// console.log(req.session);
 	if(req.session.usertype=="tpo")
@@ -299,12 +243,12 @@ app.post("/student_search", function(req,res){
 	{
 		var username = req.body.username;
 		if(username){
-				
+
 			connection.query('select * from student where student_id=?', [username], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
 					req.session.username = username;
-					res.render("student/profile.ejs", {student: results});
+					res.render("student/profile_updated.ejs", {student: results});
 				} else {
 					res.send('Incorrect Username');
 				}
@@ -318,12 +262,10 @@ app.post("/student_search", function(req,res){
 });
 
 app.get("/tpo",  function(req,res){
-	// console.log(req);
 	if(req.session.username=="231701013")
 	{
 		connection.query('select * from tpo where tpo_id = ?', [req.session.username], function(err,results,fields){
 			if(results.length > 0){
-				// console.log(results);
 				res.render("tpo/tpo.ejs", {tpo: results});
 			} else {
 				res.send("Some error occured");
@@ -492,13 +434,13 @@ app.post("/auth", function(req,res){
 	if (usertype == 'student')
 	{
 		if(username && password){
-			
+
 			connection.query('select * from student where student_id=? and pass = ?', [username,password], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
 					req.session.username = username;
 					req.session.usertype = "student";
-					res.render("student/profile.ejs", {student: results});
+					res.render("student/profile_updated.ejs", {student: results});
 				} else {
 					res.send('Incorrect Username and/or Password');
 				}
@@ -512,7 +454,7 @@ app.post("/auth", function(req,res){
 	else if (usertype == 'tpo')
 	{
 		if(username && password){
-			
+
 			connection.query('select * from tpo where tpo_id=? and pass = ?', [username,password], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -532,7 +474,7 @@ app.post("/auth", function(req,res){
 	else if (usertype == 'studentrep')
 	{
 		if(username && password){
-			
+
 			connection.query('select * from student_rep where student_rep_id=? and pass = ?', [username,password], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -552,7 +494,7 @@ app.post("/auth", function(req,res){
 	else if (usertype == 'staff')
 	{
 		if(username && password){
-			
+
 			connection.query('select * from staff_rep where staff_id=? and pass = ?', [username,password], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -572,7 +514,7 @@ app.post("/auth", function(req,res){
 	else if (usertype == 'company')
 	{
 		if(username && password){
-			
+
 			connection.query('select * from company where company_id=? and pass = ?', [username,password], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -597,12 +539,12 @@ app.post("/tpoSearch", function(req,res){
 	if (type == 'student')
 	{
 		if(username){
-			
+
 			connection.query('select * from student where student_id=?', [username], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
 					req.session.username = username;
-					res.render("student/profile.ejs", {student: results});
+					res.render("student/profile_updated.ejs", {student: results});
 				} else {
 					res.send('Incorrect Username');
 				}
@@ -616,7 +558,7 @@ app.post("/tpoSearch", function(req,res){
 	else if (type == 'studentrep')
 	{
 		if(username){
-			
+
 			connection.query('select * from student_rep where student_rep_id=?', [username], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -635,7 +577,7 @@ app.post("/tpoSearch", function(req,res){
 	else if (type == 'staff')
 	{
 		if(username){
-			
+
 			connection.query('select * from staff_rep where staff_id=?', [username], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -654,7 +596,7 @@ app.post("/tpoSearch", function(req,res){
 	else if (type == 'company')
 	{
 		if(username){
-			
+
 			connection.query('select * from company where company_id=?', [username], function(err,results,fields){
 				if (results.length > 0){
 					req.session.loggedin = true;
@@ -674,7 +616,7 @@ app.post("/tpoSearch", function(req,res){
 
 app.get("/logout", function(req,res){
 	req.session.username = null;
-	req.session.loggedin = false; 
+	req.session.loggedin = false;
 	// req.logout();
 	res.redirect('/');
 });

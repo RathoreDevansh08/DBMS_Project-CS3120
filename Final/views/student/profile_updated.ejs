@@ -10,9 +10,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <!-- Favicon icon -->
-    <title>TPO</title>
-    
-
+    <title>student</title>
     <link rel="canonical" href="https://www.wrappixel.com/templates/xtremeadmin/" />
     <link href="stylesheets/chartist.min.css" rel="stylesheet">
     <link href="stylesheets/chartist-init.css" rel="stylesheet">
@@ -23,7 +21,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Custom CSS -->
     <link href="stylesheets/style.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="stylesheets/companies_list.css">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -32,26 +29,26 @@
 <![endif]-->
 
 <style>
-        .tpo-form {
+        .student-form {
             width: 300px;
             margin: 0 auto;
             font-family: Tahoma, Geneva, sans-serif;
         }
-        .tpo-form h1 {
+        .student-form h1 {
             text-align: center;
             color: #4d4d4d;
             font-size: 24px;
             padding: 20px 0 20px 0;
         }
-        .tpo-form input[type="password"],
-        .tpo-form input[type="text"] {
+        .student-form input[type="password"],
+        .student-form input[type="text"] {
             width: 100%;
             padding: 15px;
             border: 1px solid #dddddd;
             margin-bottom: 15px;
             box-sizing:border-box;
         }
-        .tpo-form input[type="submit"] {
+        .student-form input[type="submit"] {
             width: 100%;
             padding: 15px;
             background-color: #535b63;
@@ -61,7 +58,7 @@
             font-weight: bold;
             color: #ffffff;
         }
-        .tpo-form select {
+        .student-form select {
             width: 100%;
             padding: 15px;
             border: 1px solid #dddddd;
@@ -203,10 +200,12 @@
                         </b>
                         <!--End Logo icon -->
                         <!-- Logo text -->
-                        <!-- <span class="logo-text">
+                        <span class="logo-text">
+                            <!-- dark Logo text -->
                             <img src="img/logo1.png" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo text -->
                             <img src="img/logo1.png" class="light-logo" alt="homepage" />
-                        </span> -->
+                        </span>
                     </a>
                     <!-- ============================================================== -->
                     <!-- End Logo -->
@@ -403,17 +402,17 @@
                 <div class="user-profile position-relative" style="background: url(../assets/images/background/user-info.jpg) no-repeat;">
                     <!-- User profile image -->
                     <!-- User profile text-->
-                    <div class="profile-text pt-1"> 
-                        <a href="#" class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">TPO</a>
-                        <div class="dropdown-menu animated flipInY"> 
+                    <div class="profile-text pt-1">
+                        <a href="#" class="dropdown-toggle u-dropdown w-100 text-white d-block position-relative" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true">student</a>
+                        <div class="dropdown-menu animated flipInY">
                             <a href="#" class="dropdown-item"><i class="ti-user"></i>
-                                My Profile</a> 
+                                My Profile</a>
                             <a href="#" class="dropdown-item"><i class="ti-wallet"></i> My
                                 Balance</a>
                             <a href="#" class="dropdown-item"><i class="ti-email"></i> Inbox</a>
-                            <div class="dropdown-divider"></div> 
+                            <div class="dropdown-divider"></div>
                             <a href="#" class="dropdown-item"><i class="ti-settings"></i> Account Setting</a>
-                            <div class="dropdown-divider"></div> 
+                            <div class="dropdown-divider"></div>
                             <a href="authentication-login1.html" class="dropdown-item"><i class="fa fa-power-off"></i> Logout</a>
                         </div>
                     </div>
@@ -427,36 +426,36 @@
                             <span class="hide-menu">Personal</span>
                         </li>
                         <li class="sidebar-item">
-                            
+
                             <ul>
                                 <li class="sidebar-item">
-                                    <a href="/tpo" class="sidebar-link">
+                                    <a href="/student" class="sidebar-link">
                                         <span class="hide-menu"> Profile </span>
                                     </a>
                                 </li>
                                  <li class="sidebar-item">
-                                    <a href="/student_details" class="sidebar-link">
-                                        <span class="hide-menu"> Student Details </span>
+                                    <a href="/resume" class="sidebar-link">
+                                        <span class="hide-menu"> Resume </span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="/company_details" class="sidebar-link">
-                                        <span class="hide-menu"> Company Details </span>
+                                    <a href="/applications" class="sidebar-link">
+                                        <span class="hide-menu"> Applications </span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="/assign_stud_rep" class="sidebar-link">
-                                        <span class="hide-menu"> Assign Stud Rep</span>
+                                    <a href="/companies" class="sidebar-link">
+                                        <span class="hide-menu"> Company</span>
                                     </a>
                                 </li>
                                 <li class="sidebar-item">
-                                    <a href="index3.html" class="sidebar-link">
-                                        <span class="hide-menu"> Account Details</span>
+                                    <a href="/messages" class="sidebar-link">
+                                        <span class="hide-menu"> Messages</span>
                                     </a>
                                 </li>
                             </ul>
                         </li>
-                       
+
                         <li class="sidebar-item"> <a class="sidebar-link waves-effect waves-dark sidebar-link"
                                 href="authentication-login1.html" aria-expanded="false"><i
                                     class="mdi mdi-directions"></i><span class="hide-menu">Log Out</span></a></li>
@@ -482,15 +481,48 @@
         <!-- ============================================================== -->
         <!-- Page wrapper  -->
         <!-- ============================================================== -->
+        <div class="page-wrapper">
+            <!-- ============================================================== -->
+                <!-- Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+                <div class="row page-titles">
+                    <div class="col-md-5 col-12 align-self-center">
+                        <h3 class="text-themecolor mb-0">Training and Placement Officer</h3>
+                        <ol class="breadcrumb mb-0 p-0 bg-transparent">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Update profile</a></li>
+                        </ol>
+                    </div>
+
+                <!-- ============================================================== -->
+                <!-- End Bread crumb and right sidebar toggle -->
+                <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Container fluid  -->
+            <!-- ============================================================== -->
+
+            <!-- ============================================================== -->
+            <!-- End Container fluid  -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- footer -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- End footer -->
+            <!-- ============================================================== -->
+        </div>
+        <!-- ============================================================== -->
+        <!-- End Page wrapper  -->
+        <!-- ============================================================== -->
+    </div>
     <!-- ============================================================== -->
     <!-- End Wrapper -->
     <!-- ============================================================== -->
     <!-- ============================================================== -->
     <!-- customizer Panel -->
     <!-- ============================================================== -->
-     <!-- <div class="tpo-form">
+     <!-- <div class="student-form">
         <h1>Search detail</h1>
-        <form name="tpoform" action="/tpoSearch" method="POST">
+        <form name="studentform" action="/studentSearch" method="POST">
             <input type="text" name="ID" placeholder="ID" required>
             <select id="usertype" name = "usertype">
                 <option value="student" selected="selected">Student</option>
@@ -502,31 +534,80 @@
         </form>
     </div> -->
 
-<div class="wrapper">
-  <ul class="menu">
-      <div class="head">Companies</div> 
-  <ul>
-    <% for(let i=0;i<=companies.length-1;i++) {%>
-    <li>
-      <div class="info">
-        <a href=<%= "/company/" + companies[i].company_id %>>
-            <h3 style="display: inline-block;">
-                <%= companies[i].name%>                    
-            </h3>
-            <h1 class="float-right" style="margin-top: 15px; margin-right: 15px; font-size: 25px">
-                <%= companies[i].num_verified %>/<%= companies[i].total %>                    
-            </h1>
-        </a>
-     </div>
-    </li>
-    <% } %>
-    </ul>
-  </ul>
-</div>
+     <div class="container emp-profile">
+        <form name="compprofileform" action="/update_student_profile" method="POST">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="profile-img">
+                        <img src="img/comp.jpeg">
 
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="profile-head">
 
+                                <h4>
+                                    Training and Placement Officer(student)
+                                </h4>
+                    </div>
+                </div>
 
-            
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                </div>
+                <div class="col-md-8">
+                    <div class="tab-content profile-tab" id="myTabContent">
+                        <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>User Id</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <p><%= student[0].student_id %></p>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Name</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="fname" name="name" value= <%= student[0].name %>>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Email</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="fname" name="email" value= <%= student[0].email_id %>>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Phone</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="text" id="fname" name="phone" value= <%= student[0].phone_number %>>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <label>Password</label>
+                                        </div>
+                                        <div class="col-md-8">
+                                            <input type="password" id="fname" name="pass" value= <%= student[0].pass %>>
+                                        </div>
+                                    </div>
+
+                        </div>
+                        <input type="submit" value="Update">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+
     <div class="chat-windows"></div>
     <!-- ============================================================== -->
     <!-- All Jquery -->
