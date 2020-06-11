@@ -20,8 +20,6 @@ app.use("/application", express.static("public"));
 app.use("/verify", express.static("public"));
 
 
-
-
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 app.use(require("express-session")({
@@ -156,6 +154,7 @@ app.get('/verify/:application_id', function(req,res){
 	}
 });
 
+
 app.get("/company_students_applied/:company_id", function(req,res){
 	// console.log("enter");
 	if(req.session.usertype=="company"){
@@ -201,6 +200,86 @@ app.get("/company_profile", function(req,res){
 		connection.query('select * from company where company_id = ?', [req.session.username], function(err,results,fields){
 			if(results.length > 0){
 				res.render("company/company_profile.ejs", {company: results});
+			} else {
+				res.send("Some error occured");
+			}
+		});
+	}
+	else {
+		res.send("Your are not logged in");
+	}
+});
+
+app.get("/profile_updated", function(req,res){
+	if(req.session.loggedin)
+	{
+		connection.query('select * from student where student_id = ?', [req.session.username], function(err,results,fields){
+			if(results.length > 0){
+				res.render("student/profile_updated.ejs", {student: results});
+			} else {
+				res.send("Some error occured");
+			}
+		});
+	}
+	else {
+		res.send("Your are not logged in");
+	}
+});
+
+app.get("/stud_resume", function(req,res){
+	if(req.session.loggedin)
+	{
+		connection.query('select * from student where student_id = ?', [req.session.username], function(err,results,fields){
+			if(results.length > 0){
+				res.render("student/stud_resume.ejs", {student: results});
+			} else {
+				res.send("Some error occured");
+			}
+		});
+	}
+	else {
+		res.send("Your are not logged in");
+	}
+});
+
+app.get("/stud_applications", function(req,res){
+	if(req.session.loggedin)
+	{
+		connection.query('select * from student where student_id = ?', [req.session.username], function(err,results,fields){
+			if(results.length > 0){
+				res.render("student/stud_applications.ejs", {student: results});
+			} else {
+				res.send("Some error occured");
+			}
+		});
+	}
+	else {
+		res.send("Your are not logged in");
+	}
+});
+
+app.get("/stud_messages", function(req,res){
+	if(req.session.loggedin)
+	{
+		connection.query('select * from student where student_id = ?', [req.session.username], function(err,results,fields){
+			if(results.length > 0){
+				res.render("student/stud_messages.ejs", {student: results});
+			} else {
+				res.send("Some error occured");
+			}
+		});
+	}
+	else {
+		res.send("Your are not logged in");
+	}
+});
+
+app.get("/stud_companies_view", function(req,res){
+	if(req.session.loggedin)
+	{
+		connection.query('select * from student where student_id = ?', [req.session.username], function(err,results,fields){
+			if(results.length > 0){
+				res.render("student/stud_companies_view.ejs", {student: results});
 			} else {
 				res.send("Some error occured");
 			}
@@ -278,7 +357,7 @@ app.get("/tpo",  function(req,res){
 });
 
 app.get("/assign_stud_rep", function(req,res){
-	if(req.session.userntype="tpo")
+	if(req.session.usertype="tpo")
 	{
 		res.render("tpo/assign_stud_rep.ejs");
 	}
@@ -290,10 +369,9 @@ app.post("/assign_stud_rep", function(req,res){
 	if(req.session.usertype=="tpo")
 	{
 		var username = req.body.username;
-		connection.query('insert into student_rep values (?,?)',[username,username], function(err,results,fields){
+		connection.query('insert into student_rep values (?,?,?)',[username,username,username], function(err,results,fields){
 			if(err)
 			{
-				console.log(err);
 				res.send("Some error occured");
 			}
 			else
@@ -322,22 +400,95 @@ app.post("/unassign_stud_rep", function(req,res){
 	}
 });
 
-app.post("/update_tpo_profile", function(req,res){
-	var phone = req.body.phone;
-	var pass = req.body.pass;
-	var email = req.body.email;
-	var name = req.body.name;
-	connection.query('update tpo set name = ?, email_id = ?, pass = ?, phone_number = ?', [name,email,pass,phone], function(err,results,fields)
-	{
-		if(err)
-		{
-			console.log(err);
-			res.send("Some error occured");
-		}else{
-			res.redirect("/tpo_profile_update")
-		}
-	});
+
+app.get("/student_rep", function(req,res){
+	if(req.session.usertype=="studentrep"){
+		res.render("student_rep/profile.ejs");
+	}
 });
+
+app.post("/verify_student", function(req,res){
+	if(req.session.usertype=="studentrep") {
+		var username = req.body.username;
+		connection.query('select * from student where student_id = ?', [username], function(err,general,fields){
+			connection.query('select * from electives where student_id = ?', [username], function(err,electives,fields){
+				connection.query('select * from extracurricular where student_id = ?', [username], function(err,extracurricular, fields){
+					connection.query('select * from grades where student_id = ?', [username], function(err,grades,fields){
+						connection.query('select * from por where student_id = ?', [username], function(err,por,fields){
+							connection.query('select * from project where student_id = ?', [username], function(err,projects,fields){
+								res.render("student_rep/verifyStudent.ejs", {general: general, electives: electives, por: por, extracurricular: extracurricular, grades: grades, projects: projects});
+							});
+						});
+					});
+				});
+			});
+		});
+	}
+});
+
+app.post("/verify_details/projects/:id/:title", function(req,res){
+	if(req.session.usertype=="studentrep") {
+		connection.query('select * from project where title like ? and student_id = ?', [req.params.title+'%',req.params.id], function(err,results,fields){
+			if(results[0].verified) {
+				connection.query('update project set verified = 0 wehre title = ? and student_id = ?', [req.params.title+'%',id], function(err,results,fields){
+					res.redirect("/verify_student");
+				});
+			} else {
+				connection.query('update project set verified = 1 wehre title = ? and student_id = ?', [req.params.title+'%',req.params.id], function(err,results,fields){
+					res.redirect("/verify_student");
+				});
+			}
+		});
+	}
+});
+
+app.get("/studentRepPass", function(req,res){
+	if(req.session.usertype=="studentrep"){
+		connection.query('select * from student_rep where student_rep_id = ?', [req.session.username], function(err,results,fields){
+			if(err)
+			{
+				console.log(err);
+				res.send("Some error occured");
+			}
+			else {
+				res.render("student_rep/changePass.ejs", {user: results[0]});
+			}
+		});
+	}
+});
+
+app.post("/changeStudRepPass", function(req,res){
+	if(req.session.usertype=="studentrep") {
+		var pass = req.body.pass;
+		connection.query('update student_rep set pass = ? where student_rep_id=?', [pass,req.session.username], function(err,results,fields){
+			if(err)
+				res.send("Some error occured");
+			else {
+				res.redirect("/student_rep");
+			}
+		});
+	}
+});
+
+app.post("/update_tpo_profile", function(req,res){
+	if(req.session.usertype=="tpo") {
+		var phone = req.body.phone;
+		var pass = req.body.pass;
+		var email = req.body.email;
+		var name = req.body.name;
+		connection.query('update tpo set name = ?, email_id = ?, pass = ?, phone_number = ?', [name,email,pass,phone], function(err,results,fields)
+		{
+			if(err)
+			{
+				console.log(err);
+				res.send("Some error occured");
+			}else{
+				res.redirect("/tpo_profile_update")
+			}
+		});
+	}
+});
+
 
 app.post("/update_company_profile", function(req,res){
 	var phoneno = req.body.phoneno;
@@ -480,7 +631,7 @@ app.post("/auth", function(req,res){
 					req.session.loggedin = true;
 					req.session.username = username;
 					req.session.usertype = "studentrep";
-					res.send('ohhooo its student_rep');
+					res.redirect("/student_rep");
 				} else {
 					res.send('Incorrect Username and/or Password');
 				}

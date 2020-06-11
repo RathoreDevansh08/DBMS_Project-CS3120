@@ -1,0 +1,21 @@
+<div class="wrapper">
+  <ul class="menu">
+      <div class="head">Companies</div>
+  <ul>
+    <% for(let i=0;i<=companies.length-1;i++) {%>
+    <li>
+      <div class="info">
+        <a href=<%= "/company/" + companies[i].company_id %>>
+            <h3 style="display: inline-block;">
+                <%= companies[i].name%>
+            </h3>
+            <h1 class="float-right" style="margin-top: 15px; margin-right: 15px; font-size: 25px">
+                <%= companies[i].num_verified %>/<%= companies[i].total %>
+            </h1>
+        </a>
+     </div>
+    </li>
+    <% } %>
+    </ul>
+  </ul>
+</div>

@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: cdc
 -- ------------------------------------------------------
--- Server version	10.3.22-MariaDB-1ubuntu1
+-- Server version	10.3.22-MariaDB-0ubuntu0.19.10.1
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -98,9 +98,24 @@ CREATE TABLE `company` (
 
 LOCK TABLES `company` WRITE;
 /*!40000 ALTER TABLE `company` DISABLE KEYS */;
-INSERT INTO `company` VALUES ('10101','Google','google','Delhi','Tech','11111','google@gmail.com'),('10102','Detect Technology','Detect','Chennai','Tech Company','11011','detect@gmail.com'),('10103','Google','Adobe','Banglore','Tech Company','11110','adove@adobe.com');
+INSERT INTO `company` VALUES ('10101','Google','google','Delhi','Tech','11111','google@gmail.com'),('10102','Detect Technology','Detect','Chennai','Tech Company','11011','detect@gmail.com'),('10103','Adobe','Adobe','Banglore','Tech Company','11110','adove@adobe.com');
 /*!40000 ALTER TABLE `company` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Temporary table structure for view `company_applications`
+--
+
+DROP TABLE IF EXISTS `company_applications`;
+/*!50001 DROP VIEW IF EXISTS `company_applications`*/;
+SET @saved_cs_client     = @@character_set_client;
+SET character_set_client = utf8;
+/*!50001 CREATE TABLE `company_applications` (
+  `company_id` tinyint NOT NULL,
+  `num_verified` tinyint NOT NULL,
+  `total` tinyint NOT NULL
+) ENGINE=MyISAM */;
+SET character_set_client = @saved_cs_client;
 
 --
 -- Table structure for table `company_elig_view`
@@ -164,9 +179,9 @@ DROP TABLE IF EXISTS `company_req`;
 CREATE TABLE `company_req` (
   `application_id` varchar(10) NOT NULL,
   `company_id` varchar(10) NOT NULL,
-  `required_skills` varchar(50) NOT NULL,
+  `required_skills` varchar(1000) DEFAULT NULL,
   `eligibility` varchar(50) NOT NULL,
-  `eligible_disciplines` varchar(50) NOT NULL,
+  `eligible_disciplines` varchar(200) DEFAULT NULL,
   `vacancies` int(6) NOT NULL DEFAULT 0,
   `stipend` int(10) NOT NULL DEFAULT 0,
   `start_date` date NOT NULL,
@@ -192,7 +207,7 @@ CREATE TABLE `company_req` (
 
 LOCK TABLES `company_req` WRITE;
 /*!40000 ALTER TABLE `company_req` DISABLE KEYS */;
-INSERT INTO `company_req` VALUES ('1','10101','coding','1','1',2,70000,'2020-05-01','2020-06-30','2020-04-18','google','American multinational company','2 Interviews','asdef','Bangalore','asdef','Product Intern',0),('2','10102','html css typescript angular','12','3',2,20000,'2020-05-05','2020-06-30','2020-04-18','Detect Technology','Start-up','Telephonic Interview','asdef','Chennai','asdef','Web Application',0);
+INSERT INTO `company_req` VALUES ('1','10101','coding','2nd year B.Tech, 3rd year B.Tech','Computer Science and Engineering, Electrical Engineering',2,70000,'2020-05-01','2020-06-30','2020-04-18','google','American multinational company','2 Interviews','asdef','Bangalore','asdef','Product Intern',1),('2','10102','html css typescript angular','2nd year B.Tech, 3rd year B.Tech','Computer Science and Engineering, Electrical Engineering',2,20000,'2020-05-05','2020-06-30','2020-04-18','Detect Technology','Start-up','Telephonic Interview','asdef','Chennai','asdef','Web Application',0);
 /*!40000 ALTER TABLE `company_req` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,6 +222,7 @@ CREATE TABLE `electives` (
   `student_id` varchar(10) NOT NULL,
   `course_id` varchar(10) NOT NULL,
   `title` varchar(30) NOT NULL,
+  `verified` int(1) DEFAULT 0,
   PRIMARY KEY (`student_id`,`course_id`),
   CONSTRAINT `electives_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -218,7 +234,7 @@ CREATE TABLE `electives` (
 
 LOCK TABLES `electives` WRITE;
 /*!40000 ALTER TABLE `electives` DISABLE KEYS */;
-INSERT INTO `electives` VALUES ('111701011','CS1003','Cryptography'),('111701011','CS1004','FunctionalProgramming'),('111701013','CS1000','ECONOMICS'),('111701013','CS1001','DEEP LEARNING'),('111701018','CS1001','Economics'),('111701018','CS1005','Combinatorics'),('111701019','CS1006','Digital Systems'),('111701019','EE1007','Signal and Processing'),('111701020','CE1008','Water Management'),('111701020','CE1009','Structural Design');
+INSERT INTO `electives` VALUES ('111701011','CS1003','Cryptography',0),('111701011','CS1004','FunctionalProgramming',0),('111701013','CS1000','ECONOMICS',0),('111701013','CS1001','DEEP LEARNING',0),('111701018','CS1001','Economics',0),('111701018','CS1005','Combinatorics',0),('111701019','CS1006','Digital Systems',0),('111701019','EE1007','Signal and Processing',0),('111701020','CE1008','Water Management',0),('111701020','CE1009','Structural Design',0);
 /*!40000 ALTER TABLE `electives` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -233,6 +249,7 @@ CREATE TABLE `extracurricular` (
   `student_id` varchar(10) NOT NULL,
   `title` varchar(30) NOT NULL,
   `description` varchar(50) DEFAULT NULL,
+  `verified` int(1) DEFAULT 0,
   PRIMARY KEY (`student_id`,`title`),
   CONSTRAINT `extracurricular_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -244,7 +261,7 @@ CREATE TABLE `extracurricular` (
 
 LOCK TABLES `extracurricular` WRITE;
 /*!40000 ALTER TABLE `extracurricular` DISABLE KEYS */;
-INSERT INTO `extracurricular` VALUES ('111701011','Chess','Chess.com'),('111701011','T.T.','Intra College Sports'),('111701013','Drummer','Indias most wanted Drummer'),('111701018','Badminton Player','Have been selected for a state level tournament'),('111701018','BasketBall Player','Have been selected for a state level tournament'),('111701018','Chess Player','Have been selected for a state level tournament'),('111701018','TFS Correspondent','An indepedent college media body correspondent'),('111701019','TFS Correspondent','An indepedent college media body correspondent'),('111701020','TFS Correspondent','An indepedent college media body correspondent');
+INSERT INTO `extracurricular` VALUES ('111701011','Chess','Chess.com',0),('111701011','T.T.','Intra College Sports',0),('111701013','Drummer','Indias most wanted Drummer',0),('111701018','Badminton Player','Have been selected for a state level tournament',0),('111701018','BasketBall Player','Have been selected for a state level tournament',0),('111701018','Chess Player','Have been selected for a state level tournament',0),('111701018','TFS Correspondent','An indepedent college media body correspondent',0),('111701019','TFS Correspondent','An indepedent college media body correspondent',0),('111701020','TFS Correspondent','An indepedent college media body correspondent',0);
 /*!40000 ALTER TABLE `extracurricular` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -266,6 +283,7 @@ CREATE TABLE `grades` (
   `sem7` decimal(4,2) DEFAULT NULL,
   `sem8` decimal(4,2) DEFAULT NULL,
   `cgpa` decimal(4,2) DEFAULT NULL,
+  `verified` int(1) DEFAULT 0,
   PRIMARY KEY (`student_id`),
   CONSTRAINT `grades_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -277,7 +295,7 @@ CREATE TABLE `grades` (
 
 LOCK TABLES `grades` WRITE;
 /*!40000 ALTER TABLE `grades` DISABLE KEYS */;
-INSERT INTO `grades` VALUES ('111701011',8.72,8.48,8.27,8.78,NULL,NULL,NULL,NULL,8.56),('111701013',1.10,2.20,3.30,4.40,5.50,NULL,NULL,NULL,3.60),('111701018',9.90,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9.90),('111701019',9.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9.00),('111701020',9.90,8.90,8.00,9.00,9.40,NULL,NULL,NULL,9.99);
+INSERT INTO `grades` VALUES ('111701011',8.72,8.48,8.27,8.78,NULL,NULL,NULL,NULL,8.56,0),('111701013',1.10,2.20,3.30,4.40,5.50,NULL,NULL,NULL,3.60,0),('111701018',9.90,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9.90,0),('111701019',9.00,NULL,NULL,NULL,NULL,NULL,NULL,NULL,9.00,0),('111701020',9.90,8.90,8.00,9.00,9.40,NULL,NULL,NULL,9.99,0);
 /*!40000 ALTER TABLE `grades` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -559,6 +577,7 @@ CREATE TABLE `por` (
   `description` varchar(50) NOT NULL,
   `start_date` date DEFAULT NULL,
   `end_date` date DEFAULT NULL,
+  `verified` int(1) DEFAULT 0,
   PRIMARY KEY (`student_id`,`description`),
   CONSTRAINT `por_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -570,7 +589,7 @@ CREATE TABLE `por` (
 
 LOCK TABLES `por` WRITE;
 /*!40000 ALTER TABLE `por` DISABLE KEYS */;
-INSERT INTO `por` VALUES ('111701011','DAC Head','2018-08-01','2019-08-01'),('111701013','Student General Secretary','2017-08-01','2021-04-30'),('111701018','Head Girl','2016-08-08','2017-08-08'),('111701018','Technical Sec.','2019-07-05','2020-02-12'),('111701019','CDC Coordinator','2016-08-08','2017-08-08'),('111701020','CDC Coordinator','2019-08-08','2019-12-09'),('111701020','Hostel Secetary','2017-07-05','2019-02-12');
+INSERT INTO `por` VALUES ('111701011','DAC Head','2018-08-01','2019-08-01',0),('111701013','Student General Secretary','2017-08-01','2021-04-30',0),('111701018','Head Girl','2016-08-08','2017-08-08',0),('111701018','Technical Sec.','2019-07-05','2020-02-12',0),('111701019','CDC Coordinator','2016-08-08','2017-08-08',0),('111701020','CDC Coordinator','2019-08-08','2019-12-09',0),('111701020','Hostel Secetary','2017-07-05','2019-02-12',0);
 /*!40000 ALTER TABLE `por` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -587,6 +606,7 @@ CREATE TABLE `project` (
   `description` varchar(50) DEFAULT NULL,
   `start_date` date NOT NULL,
   `end_date` date NOT NULL,
+  `verified` int(1) DEFAULT 0,
   PRIMARY KEY (`student_id`,`title`),
   CONSTRAINT `project_ibfk_1` FOREIGN KEY (`student_id`) REFERENCES `student` (`student_id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
@@ -598,7 +618,7 @@ CREATE TABLE `project` (
 
 LOCK TABLES `project` WRITE;
 /*!40000 ALTER TABLE `project` DISABLE KEYS */;
-INSERT INTO `project` VALUES ('111701011','Cartoonifier','Image processing, OpenCV','2018-08-01','2018-08-15'),('111701013','Arm Building Machine','An automatic machine which build arms','2018-01-01','2018-01-02'),('111701013','Web Development','Fest Website','2019-04-01','2020-01-20'),('111701018','Website','Fest website for the college','2019-06-09','2020-08-09'),('111701019','Signal Processing','Signal detection in transport','2019-07-09','2020-09-09'),('111701020','Building design','Design for a tall building','2018-07-09','2019-08-09'),('111701020','Drone','Design a drone programmable crash resistant','2019-07-09','2020-08-09');
+INSERT INTO `project` VALUES ('111701011','Cartoonifier','Image processing, OpenCV','2018-08-01','2018-08-15',0),('111701013','Arm Building Machine','An automatic machine which build arms','2018-01-01','2018-01-02',0),('111701013','Web Development','Fest Website','2019-04-01','2020-01-20',0),('111701018','Website','Fest website for the college','2019-06-09','2020-08-09',0),('111701019','Signal Processing','Signal detection in transport','2019-07-09','2020-09-09',0),('111701020','Building design','Design for a tall building','2018-07-09','2019-08-09',0),('111701020','Drone','Design a drone programmable crash resistant','2019-07-09','2020-08-09',0);
 /*!40000 ALTER TABLE `project` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -896,7 +916,7 @@ CREATE TABLE `student` (
   `pass` varchar(20) NOT NULL,
   `applicability` tinyint(1) NOT NULL DEFAULT 1,
   `admission_year` year(4) NOT NULL,
-  `verified` tinyint(1) DEFAULT 1,
+  `verified` int(1) DEFAULT 0,
   `tenth_percent` decimal(4,2) NOT NULL,
   `tenth_school` varchar(50) NOT NULL,
   `tenth_board` varchar(30) NOT NULL,
@@ -1010,6 +1030,25 @@ LOCK TABLES `tpo` WRITE;
 INSERT INTO `tpo` VALUES ('231701013','password','Santhosh','231701013@smail.iitpkd.ac.in','934301','2016-02-01',NULL);
 /*!40000 ALTER TABLE `tpo` ENABLE KEYS */;
 UNLOCK TABLES;
+
+--
+-- Final view structure for view `company_applications`
+--
+
+/*!50001 DROP TABLE IF EXISTS `company_applications`*/;
+/*!50001 DROP VIEW IF EXISTS `company_applications`*/;
+/*!50001 SET @saved_cs_client          = @@character_set_client */;
+/*!50001 SET @saved_cs_results         = @@character_set_results */;
+/*!50001 SET @saved_col_connection     = @@collation_connection */;
+/*!50001 SET character_set_client      = utf8mb4 */;
+/*!50001 SET character_set_results     = utf8mb4 */;
+/*!50001 SET collation_connection      = utf8mb4_general_ci */;
+/*!50001 CREATE ALGORITHM=UNDEFINED */
+/*!50013 DEFINER=`root`@`localhost` SQL SECURITY DEFINER */
+/*!50001 VIEW `company_applications` AS with verified(id,coun) as (select `company_req`.`company_id` AS `id`,count(`company_req`.`verified`) AS `coun` from `company_req` where `company_req`.`verified` = 1 group by `company_req`.`company_id`)select `C`.`company_id` AS `company_id`,ifnull(`V`.`coun`,0) AS `num_verified`,count(`C`.`verified`) AS `total` from (`company_req` `C` left join `verified` `V` on(`C`.`company_id` = `V`.`id`)) group by `C`.`company_id` */;
+/*!50001 SET character_set_client      = @saved_cs_client */;
+/*!50001 SET character_set_results     = @saved_cs_results */;
+/*!50001 SET collation_connection      = @saved_col_connection */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -1020,4 +1059,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2020-05-22  1:24:43
+-- Dump completed on 2020-06-02 21:32:23
